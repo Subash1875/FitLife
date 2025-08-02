@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.index({name : 1})
+
 //Signup
 userSchema.statics.signup = async function (email, name, password) {
   if (!email || !name || !password) {
