@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const upload = require("./middleware/multer.js");
-const path = require("path");
+const rateLimiter = require("express-rate-limit")
 
 const controller = require("./controllers/controller.js");
 const authController = require("./controllers/authController.js");
@@ -13,6 +13,15 @@ const adminController = require("./controllers/adminController/adminController.j
 const requireAuth = require("./middleware/middleware.js");
 
 const app = express();
+
+// rate limiter
+const limiter = rateLimiter({
+  windowMs: 1 * 60 * 1000,
+  max: 20,
+  message: "too many requests, try again later"
+})
+
+app.use(limiter)
 
 app.use(express.json());
 app.use(cors());
